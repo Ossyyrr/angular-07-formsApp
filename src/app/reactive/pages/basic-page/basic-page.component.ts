@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ValidatorsService } from '../../../shared/service/validatos.service';
 
 @Component({
   selector: 'app-basic-page',
@@ -15,13 +16,15 @@ export class BasicPageComponent {
   //   inStorage: new FormControl(0),
   // });
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private validatorsService: ValidatorsService
+  ) {}
 
-  isValidField(field: string): boolean | null {
-    return (
-      this.myForm.controls[field].errors && this.myForm.controls[field].touched
-    );
+  isValidField(field: string) {
+    return this.validatorsService.isValidField(this.myForm, field);
   }
+
   getFieldError(field: string): string | null {
     if (!this.myForm.controls[field].errors) return null;
     const errors = this.myForm.controls[field].errors || {};
